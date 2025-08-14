@@ -15,10 +15,10 @@ This tool helps you keep your directories tidy by moving files into dedicated fo
 
 ## Installation
 
-*(Instructions to be added once the tool is packaged.)*
+You can install the File Organizer CLI directly from PyPI:
 
 ```bash
-pip install file-organizer
+pip install kps-file-organizer
 ```
 
 ## Usage
