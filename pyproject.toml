@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kps-file-organizer"
-version = "0.1.1"
+version = "0.2.0"
 authors = [
   { name="Krishna Pratap Singh", email="kps369@proton.me" },
 ]

@@ -9,7 +9,7 @@ console = Console()
 def organize_by_extension(path: Path):
     """Organizes files in the given path by their extension."""
     console.print(
-        f"\n[bold cyan]Organizing {path} by file extension...[/bold cyan]"
+        f"[bold cyan]Organizing {path} by file extension...[/bold cyan]"
     )
 
     for item in path.iterdir():

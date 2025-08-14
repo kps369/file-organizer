@@ -23,11 +23,22 @@ pip install kps-file-organizer
 
 ## Usage
 
-*(Examples to be added.)*
+Here are a couple of examples of how to use the tool.
 
-To organize your `Downloads` folder by file extension:
+### Organize by File Extension
+
+This command will scan the specified directory and group files into subdirectories based on their extension (e.g., `pdf`, `jpg`, `txt`).
+
 ```bash
-file-organizer --path /path/to/your/Downloads --by-extension
+file-organizer /path/to/your/directory --by-extension
+```
+
+### Organize by Date
+
+This command will scan the specified directory and group files into subdirectories based on their modification date.
+
+```bash
+file-organizer /path/to/your/directory --by-date
 ```
 
 ## Author
