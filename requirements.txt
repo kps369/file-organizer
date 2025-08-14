@@ -1,0 +1,2 @@
+# Dependencies for file-organizer
+# We will add 'typer' here later.
