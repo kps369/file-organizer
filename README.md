@@ -41,6 +41,14 @@ This command will scan the specified directory and group files into subdirectori
 file-organizer /path/to/your/directory --by-date
 ```
 
+### Previewing Changes (Dry Run)
+
+To see which files will be moved without actually performing the operation, use the `--dry-run` flag. This is highly recommended to run first.
+
+```bash
+file-organizer /path/to/your/directory --by-extension --dry-run
+```
+
 ## Author
 
 - **Krishna Pratap Singh**
