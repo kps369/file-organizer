@@ -8,13 +8,16 @@ app = typer.Typer()
 console = Console()
 
 
-def organize_by_extension(path: Path, dry_run: bool = False):
+def organize_by_extension(
+    path: Path, dry_run: bool = False, recursive: bool = False
+):
     """Organizes files in the given path by their extension."""
     console.print(
         f"\n[bold cyan]Organizing {path} by file extension...[/bold cyan]"
     )
 
-    for item in path.iterdir():
+    items = path.rglob("*") if recursive else path.iterdir()
+    for item in items:
         if not item.is_file() or item.name.startswith("."):
             continue
 
@@ -47,11 +50,14 @@ def organize_by_extension(path: Path, dry_run: bool = False):
             )
 
 
-def organize_by_date(path: Path, dry_run: bool = False):
+def organize_by_date(
+    path: Path, dry_run: bool = False, recursive: bool = False
+):
     """Organizes files in the given path by their modification date."""
     console.print(f"\n[bold cyan]Organizing {path} by date...[/bold cyan]")
 
-    for item in path.iterdir():
+    items = path.rglob("*") if recursive else path.iterdir()
+    for item in items:
         if not item.is_file() or item.name.startswith("."):
             continue
 
@@ -79,7 +85,9 @@ def organize_by_date(path: Path, dry_run: bool = False):
             )
 
 
-def organize_by_size(path: Path, dry_run: bool = False):
+def organize_by_size(
+    path: Path, dry_run: bool = False, recursive: bool = False
+):
     """Organizes files in the given path by their size."""
     console.print(
         f"\n[bold cyan]Organizing {path} by file size...[/bold cyan]"
@@ -93,7 +101,8 @@ def organize_by_size(path: Path, dry_run: bool = False):
         "Huge": (1_073_741_824, float("inf")),  # > 1 GB
     }
 
-    for item in path.iterdir():
+    items = path.rglob("*") if recursive else path.iterdir()
+    for item in items:
         if not item.is_file() or item.name.startswith("."):
             continue
 
@@ -147,6 +156,9 @@ def main(
     by_size: bool = typer.Option(
         False, "--by-size", "-s", help="Organize files by size."
     ),
+    recursive: bool = typer.Option(
+        False, "--recursive", "-r", help="Organize files recursively."
+    ),
     dry_run: bool = typer.Option(
         False,
         "--dry-run",
@@ -165,11 +177,11 @@ def main(
         raise typer.Exit()
 
     if by_extension:
-        organize_by_extension(path, dry_run)
+        organize_by_extension(path, dry_run, recursive)
     if by_date:
-        organize_by_date(path, dry_run)
+        organize_by_date(path, dry_run, recursive)
     if by_size:
-        organize_by_size(path, dry_run)
+        organize_by_size(path, dry_run, recursive)
 
     if not dry_run:
         console.print("\n[bold green]✨ Organization complete! ✨[/bold green]")
