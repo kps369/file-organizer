@@ -10,6 +10,7 @@ This tool helps you keep your directories tidy by moving files into dedicated fo
 
 *   Organize files by their extension (e.g., `.pdf`, `.jpg`, `.docx`).
 *   Sort files into folders by creation date (e.g., `YYYY-MM-DD`).
+*   Organize files by size (e.g., `Small`, `Medium`, `Large`).
 *   Highly configurable using a `config.yaml` file.
 *   Cross-platform and easy to use.
 
@@ -39,6 +40,14 @@ This command will scan the specified directory and group files into subdirectori
 
 ```bash
 file-organizer /path/to/your/directory --by-date
+```
+
+### Organize by File Size
+
+This command will scan the specified directory and group files into subdirectories based on their size.
+
+```bash
+file-organizer /path/to/your/directory --by-size
 ```
 
 ### Previewing Changes (Dry Run)
