@@ -12,6 +12,7 @@ This tool helps you keep your directories tidy by moving files into dedicated fo
 *   Sort files into folders by creation date (e.g., `YYYY-MM-DD`).
 *   Organize files by size (e.g., `Small`, `Medium`, `Large`).
 *   Recursive organization.
+*   Customizable folder names using templates.
 *   Highly configurable using a `config.yaml` file.
 *   Cross-platform and easy to use.
 
@@ -58,6 +59,14 @@ To organize files in subdirectories as well, use the `--recursive` flag.
 ```bash
 file-organizer /path/to/your/directory --by-extension --recursive
 ```
+
+### Customizable Folder Names
+
+You can customize the folder names using templates.
+
+-   `--ext-template "{ext}-files"`
+-   `--date-template "{YYYY}/{MM}"`
+-   `--size-template "{size}-files"`
 
 ### Previewing Changes (Dry Run)
 

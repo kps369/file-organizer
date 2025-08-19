@@ -9,7 +9,10 @@ console = Console()
 
 
 def organize_by_extension(
-    path: Path, dry_run: bool = False, recursive: bool = False
+    path: Path,
+    dry_run: bool = False,
+    recursive: bool = False,
+    ext_template: str = "{ext}",
 ):
     """Organizes files in the given path by their extension."""
     console.print(
@@ -28,7 +31,8 @@ def organize_by_extension(
             )
             continue
 
-        dest_dir = path / extension[1:]
+        dest_dir_name = ext_template.format(ext=extension[1:])
+        dest_dir = path / dest_dir_name
 
         if dry_run:
             console.print(
@@ -44,14 +48,17 @@ def organize_by_extension(
             console.print(
                 f"[green]Moved '{item.name}' to '{dest_dir.name}/'[/green]"
             )
-        except Exception as e:
+        except Exception as e:  # noqa: F841
             console.print(
-                f"[bold red]Error moving '{item.name}': {e}[/bold red]"
+                f"[bold red]Error moving '{item.name}': {{e}}[/bold red]"
             )
 
 
 def organize_by_date(
-    path: Path, dry_run: bool = False, recursive: bool = False
+    path: Path,
+    dry_run: bool = False,
+    recursive: bool = False,
+    date_template: str = "{YYYY}-{MM}-{DD}",
 ):
     """Organizes files in the given path by their modification date."""
     console.print(f"\n[bold cyan]Organizing {path} by date...[/bold cyan]")
@@ -62,8 +69,13 @@ def organize_by_date(
             continue
 
         m_time = item.stat().st_mtime
-        date_str = datetime.fromtimestamp(m_time).strftime("%Y-%m-%d")
-        dest_dir = path / date_str
+        dt_object = datetime.fromtimestamp(m_time)
+        dest_dir_name = date_template.format(
+            YYYY=dt_object.year,
+            MM=f"{dt_object.month:02}",
+            DD=f"{dt_object.day:02}",
+        )
+        dest_dir = path / dest_dir_name
 
         if dry_run:
             console.print(
@@ -79,14 +91,17 @@ def organize_by_date(
             console.print(
                 f"[green]Moved '{item.name}' to '{dest_dir.name}/'[/green]"
             )
-        except Exception as e:
+        except Exception as e:  # noqa: F841
             console.print(
-                f"[bold red]Error moving '{item.name}': {e}[/bold red]"
+                f"[bold red]Error moving '{item.name}': {{e}}[/bold red]"
             )
 
 
 def organize_by_size(
-    path: Path, dry_run: bool = False, recursive: bool = False
+    path: Path,
+    dry_run: bool = False,
+    recursive: bool = False,
+    size_template: str = "{size}",
 ):
     """Organizes files in the given path by their size."""
     console.print(
@@ -107,13 +122,14 @@ def organize_by_size(
             continue
 
         size = item.stat().st_size
-        dest_folder = "Unknown"
+        dest_folder_name = "Unknown"
         for name, (min_size, max_size) in size_map.items():
             if min_size <= size < max_size:
-                dest_folder = name
+                dest_folder_name = name
                 break
 
-        dest_dir = path / dest_folder
+        dest_dir_name = size_template.format(size=dest_folder_name)
+        dest_dir = path / dest_dir_name
 
         if dry_run:
             console.print(
@@ -129,9 +145,9 @@ def organize_by_size(
             console.print(
                 f"[green]Moved '{item.name}' to '{dest_dir.name}/'[/green]"
             )
-        except Exception as e:
+        except Exception as e:  # noqa: F841
             console.print(
-                f"[bold red]Error moving '{item.name}': {e}[/bold red]"
+                f"[bold red]Error moving '{item.name}': {{e}}[/bold red]"
             )
 
 
@@ -159,6 +175,21 @@ def main(
     recursive: bool = typer.Option(
         False, "--recursive", "-r", help="Organize files recursively."
     ),
+    ext_template: str = typer.Option(
+        "{ext}",
+        "--ext-template",
+        help="Template for extension-based folder names.",
+    ),
+    date_template: str = typer.Option(
+        "{YYYY}-{MM}-{DD}",
+        "--date-template",
+        help="Template for date-based folder names.",
+    ),
+    size_template: str = typer.Option(
+        "{size}",
+        "--size-template",
+        help="Template for size-based folder names.",
+    ),
     dry_run: bool = typer.Option(
         False,
         "--dry-run",
@@ -177,11 +208,11 @@ def main(
         raise typer.Exit()
 
     if by_extension:
-        organize_by_extension(path, dry_run, recursive)
+        organize_by_extension(path, dry_run, recursive, ext_template)
     if by_date:
-        organize_by_date(path, dry_run, recursive)
+        organize_by_date(path, dry_run, recursive, date_template)
     if by_size:
-        organize_by_size(path, dry_run, recursive)
+        organize_by_size(path, dry_run, recursive, size_template)
 
     if not dry_run:
         console.print("\n[bold green]✨ Organization complete! ✨[/bold green]")
